@@ -19,6 +19,7 @@ To view the current Fortitude, Alcohol Content, and Gold of the current players:
 
 ### To Add Fortitude, Alcohol Content or Gold to _YOUR_ Character
 > **Note:** Negative numbers are accepted by the `fortitude`, `alcohol` and `gold` commands.
+
 `!rdi fortitude <int>`
 
 `!rdi alcohol <int>`
