@@ -8,9 +8,10 @@ class RDI(Cog):
 
     @command()
     @guild_only()
-    async def start(self, ctx, players: list, boozemeister: str):
+    async def start(self, ctx, boozemeister: str, *players):
         """Start a game of Red Dragon Inn!"""
-        await ctx.send(f'Game started! Players: {players} / Boozemeister: {boozemeister}')
+        await ctx.send(f"Players: {players}, Boozemeister: {boozemeister}")
+        pass
 
     @command()
     @guild_only()
@@ -41,3 +42,16 @@ class RDI(Cog):
     async def buy_drink(self, ctx, player: str, count: int):
         """Buy a drink for your friend! Adds [count] drinks to their Drink Me! pile"""
         pass
+
+    @command()
+    @guild_only()
+    async def drink(self, ctx):
+        """Removes a drink from your Drink Me! pile."""
+        pass
+
+    @command()
+    @guild_only()
+    async def end_game(self, ctx):
+        """end the current Red Dragon Inn game"""
+        pass
+
