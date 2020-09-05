@@ -1,0 +1,13 @@
+{
+  "author": "tlkamp",
+  "install_msg": "",
+  "name": "RDI",
+  "short": "manages a game of Red Dragon Inn",
+  "description": "Manages a game of Red Dragon Inn",
+  "tags": [
+    "rdi",
+    "red dragon inn"
+  ],
+  "requirements": [],
+  "hidden": false
+}
