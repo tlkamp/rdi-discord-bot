@@ -1,6 +1,6 @@
-from .rdi import RDI
+from .rdi import RedDragonInn
 
 
 def setup(bot):
-    bot.add_cog(RDI())
+    bot.add_cog(RedDragonInn())
 
