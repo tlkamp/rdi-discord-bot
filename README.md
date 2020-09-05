@@ -8,6 +8,7 @@ You can find the publisher's recommendation for how to play Red Dragon Inn remot
 
 ### Starting A Game
 To start a game, you must identify the Boozemeister and any Players.
+> **Note**: The Boozemeister is automatically included as a player.
 
 Begin a game by issuing the following command: `!rdi start <boozemeister> <players>`
 
@@ -17,13 +18,12 @@ To view the current Fortitude, Alcohol Content, and Gold of the current players:
 `!rdi stats`
 
 ### To Add Fortitude, Alcohol Content or Gold to _YOUR_ Character
+> **Note:** Negative numbers are accepted by the `fortitude`, `alcohol` and `gold` commands.
 `!rdi fortitude <int>`
 
 `!rdi alcohol <int>`
 
 `!rdi gold <int>`
-
-> **Note:** Negative numbers are accepted by the `fortitude`, `alcohol` and `gold` commands.
 
 ### Buying Drinks
 To help your Boozemeister keep track of drinks, tell RDI bot who you're buying drinks for:
