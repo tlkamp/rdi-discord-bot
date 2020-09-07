@@ -17,6 +17,8 @@ To view the current Fortitude, Alcohol Content, Gold, and Drink Me! pile of the 
 
 `!rdi stats`
 
+> **Note:** All player stats will be shown when there is a change to any player's stats.
+
 ### To Add Fortitude, Alcohol Content or Gold to _YOUR_ Character
 > **Note:** Negative numbers are accepted by the `fortitude`, `alcohol` and `gold` commands.
 
@@ -38,6 +40,7 @@ Decrement your current Drink Me! pile count.
 
 ### Ending a Game
 > **Note**: Only the Boozemeister is allowed to end the game.
+
 `!rdi end_game`
 
 ## Rule Management
