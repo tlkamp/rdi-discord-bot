@@ -13,6 +13,9 @@ class Player:
     def __repr__(self):
         return f"{self.discord_user}{'*' if self.is_boozemeister else ''}"
 
+    def __str__(self):
+        return self.__repr__()
+
     def drink(self):
         self.drinks -= 1
 

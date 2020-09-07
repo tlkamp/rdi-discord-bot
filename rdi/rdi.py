@@ -12,12 +12,14 @@ class RedDragonInn(commands.Cog):
     def __init__(self):
         self.config = Config.get_conf(self, identifier=999999999999, force_registration=True)
         self.games = dict()
+        super().__init__()
 
     @commands.group()
     @commands.guild_only()
     async def rdi(self, ctx):
         pass
 
+    # Game setup
     @rdi.command()
     async def start(self, ctx):
         """Start a game of Red Dragon Inn!"""
@@ -32,8 +34,17 @@ class RedDragonInn(commands.Cog):
         g = Game(ctx.author)
         self.games[ctx.guild][ctx.channel] = g
         await ctx.send(f"{ctx.author.display_name} has started a game of Red Dragon Inn!")
-        await ctx.send(f"Use `{ctx.clean_prefix}play` to add yourself to the game.")
-        await ctx.send(g.stats())
+        await ctx.send(f"Use `{ctx.clean_prefix}rdi play` to add yourself to the game.")
+        await self.stats(ctx)
+
+    @rdi.command()
+    async def end(self, ctx):
+        """end the current Red Dragon Inn game"""
+        if self.author_is_boozemeister(ctx):
+            del self.games[ctx.guild][ctx.channel]
+            await ctx.send(f"The Red Dragon Inn game for {ctx.channel} has ended.")
+        else:
+            await ctx.send("Only the boozemeister can end the game.")
 
     @rdi.command()
     async def play(self, ctx, character: str = ""):
@@ -43,6 +54,17 @@ class RedDragonInn(commands.Cog):
         if self.game_exists(ctx):
             self.games[ctx.guild][ctx.channel].add_player(Player(ctx.author.display_name, character))
             await ctx.send(f"{ctx.author.display_name} added to game.")
+            await self.stats(ctx)
+
+    @rdi.command(aliases=["randomize", "rt"])
+    async def random(self, ctx):
+        """Randomize the turn order. Only the boozemeister can randomize the turn order."""
+        if self.author_is_boozemeister(ctx):
+            import random
+            game = self.game_for_guild_channel(ctx)
+            temp = list(game.players.items())
+            random.shuffle(temp)
+            game.players = dict(temp)
             await self.stats(ctx)
 
     @rdi.command(aliases=["add"])
@@ -61,6 +83,7 @@ class RedDragonInn(commands.Cog):
         if self.game_exists(ctx):
             await ctx.send(self.games[ctx.guild][ctx.channel].stats())
 
+    # Player Actions
     @rdi.command()
     async def fortitude(self, ctx, value: int):
         """Add or remove fortitude from your character"""
@@ -71,6 +94,7 @@ class RedDragonInn(commands.Cog):
 
     @rdi.command()
     async def alcohol(self, ctx, value: int):
+        """Have another or sober up!"""
         if self.game_exists(ctx):
             game = self.game_for_guild_channel(ctx)
             game.players[ctx.author.display_name].update_alcohol(value)
@@ -85,7 +109,7 @@ class RedDragonInn(commands.Cog):
             await self.stats(ctx)
 
     @rdi.command()
-    async def buy_drink(self, ctx, player: discord.user.User, count: int):
+    async def buy(self, ctx, player: discord.user.User, count: int):
         """Buy a drink for your friend! Adds [count] drinks to their Drink Me! pile"""
         if self.author_in_game(ctx) and self.player_in_game(ctx, player):
             game = self.game_for_guild_channel(ctx)
@@ -95,12 +119,21 @@ class RedDragonInn(commands.Cog):
     @rdi.command()
     async def drink(self, ctx):
         """Removes a drink from your Drink Me! pile."""
-        pass
+        if self.author_in_game(ctx):
+            game = self.game_for_guild_channel(ctx)
+            game.players[ctx.author.display_name].drink()
+            await self.stats(ctx)
 
+    # Game Rules
     @rdi.command(aliases=["gr"])
     async def gamerules(self, ctx):
         """View the rules for Red Dragon Inn."""
-        pass
+        game_rules = "https://slugfestgames.com/games/rdi/"
+        virtual_rdi_rules = "https://slugfestgames.com/teleconference-rdi/"
+        await ctx.send("**Red Dragon Inn Rules**")
+        await ctx.send(f"Game & Character Rules - {game_rules}")
+        await ctx.send(f"Remote RDI Rules - {virtual_rdi_rules}")
+        await ctx.send("REMEMBER: This only works if you are honest. Please don't make us regret playing with you.")
 
     @rdi.command(aliases=["hr"])
     async def houserules(self, ctx):
@@ -136,15 +169,6 @@ class RedDragonInn(commands.Cog):
         """View all rules in effect for the current game of Red Dragon Inn"""
         await self.gamerules(ctx)
         await self.houserules(ctx)
-
-    @rdi.command(aliases=["end"])
-    async def end_game(self, ctx):
-        """end the current Red Dragon Inn game"""
-        if self.author_is_boozemeister(ctx):
-            del self.games[ctx.guild][ctx.channel]
-            await ctx.send(f"The Red Dragon Inn game for {ctx.channel} has ended.")
-        else:
-            await ctx.send("Only the boozemeister can end the game.")
 
     # Helper functions for checking Game existence and Boozemisterness
     def game_exists(self, ctx) -> bool:
