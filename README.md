@@ -12,6 +12,12 @@ To start a game of Red Dragon Inn, issue the following command: `!rdi start`
 > **Note**: The user who starts the game becomes the Boozemeister.
 > The Boozemeister is added as a player automatically.
 
+### The Turn Order
+The order in which players join or are added to the game is the default turn order. The 
+Boozemeister may randomize the turn order with the following command:
+
+`!rdi random`
+
 ### Viewing Player Stats
 To view the current Fortitude, Alcohol Content, Gold, and Drink Me! pile of the current players:
 
