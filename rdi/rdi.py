@@ -131,7 +131,6 @@ class RedDragonInn(commands.Cog):
             del game.house_rules[rule-1]
             await self.houserules(ctx)
 
-
     @rdi.command()
     async def rules(self, ctx):
         """View all rules in effect for the current game of Red Dragon Inn"""
