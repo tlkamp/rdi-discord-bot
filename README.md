@@ -31,7 +31,7 @@ To view the current Fortitude, Alcohol Content, Gold, and Drink Me! pile of the 
 ### Buying Drinks
 To help your Boozemeister keep track of drinks, tell RDI bot who you're buying drinks for:
 
-`!rdi buy_drink <player>`
+`!rdi buy <player>`
 
 ### Drinking Drinks
 Decrement your current Drink Me! pile count.
@@ -41,7 +41,7 @@ Decrement your current Drink Me! pile count.
 ### Ending a Game
 > **Note**: Only the Boozemeister is allowed to end the game.
 
-`!rdi end_game`
+`!rdi end`
 
 ## Rule Management
 There are some aspects of Red Dragon Inn that are ambiguous in the official rule documentation, and there are ways to
