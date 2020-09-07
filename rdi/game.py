@@ -12,8 +12,8 @@ class Game:
     def stats(self):
         columns = ["player", "character", "fortitude", "alcohol", "gold", "drinks"]
         table = PrettyTable(field_names=columns)
-        for p in self.players:
-           table.add_row([p.discord_user, p.character, p.fortitude, p.alcohol, p.gold, p.drinks])
+        for k, v in self.players.items():
+           table.add_row([v.discord_user, v.character, v.fortitude, v.alcohol, v.gold, v.drinks])
         return f"```{table}```"
 
     def add_player(self, player: Player):
