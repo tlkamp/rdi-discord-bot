@@ -8,6 +8,6 @@
     "rdi",
     "red dragon inn"
   ],
-  "requirements": [],
+  "requirements": ["prettytable"],
   "hidden": false
 }

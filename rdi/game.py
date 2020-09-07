@@ -6,14 +6,20 @@ from discord.user import User
 class Game:
     def __init__(self, boozemeister: User):
         self.boozemeister = boozemeister
-        self.players = [Player(boozemeister.display_name)]
+        self.players = dict()
+        self.players[boozemeister.display_name] = Player(boozemeister.display_name, boozemeister=True)
+        self.house_rules = list()
 
     def stats(self):
         columns = ["player", "character", "fortitude", "alcohol", "gold", "drinks"]
         table = PrettyTable(field_names=columns)
-        for p in self.players:
-           table.add_row([p.discord_user, p.character, p.fortitude, p.alcohol, p.gold, p.drinks])
+        for k, v in self.players.items():
+           table.add_row([str(v), v.character, v.fortitude(), v.alcohol(), v.gold(), v.drinks()])
         return f"```{table}```"
 
     def add_player(self, player: Player):
-        self.players.append(player)
+        self.players[player.discord_user] = player
+
+    def get_rules(self):
+        # Enumerate the rules, starting with an index of 1 rather than 0.
+        return enumerate(self.house_rules, 1)
