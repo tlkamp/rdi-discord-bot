@@ -6,7 +6,8 @@ from discord.user import User
 class Game:
     def __init__(self, boozemeister: User):
         self.boozemeister = boozemeister
-        self.players = [Player(boozemeister.display_name)]
+        self.players = dict()
+        self.players[boozemeister.display_name] = Player(boozemeister.display_name)
 
     def stats(self):
         columns = ["player", "character", "fortitude", "alcohol", "gold", "drinks"]
@@ -16,4 +17,4 @@ class Game:
         return f"```{table}```"
 
     def add_player(self, player: Player):
-        self.players.append(player)
+        self.players[player.discord_user] = player
