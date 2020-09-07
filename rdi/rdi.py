@@ -97,6 +97,29 @@ class RedDragonInn(commands.Cog):
         """Removes a drink from your Drink Me! pile."""
         pass
 
+    @rdi.command(aliases=["gr"])
+    async def gamerules(self, ctx):
+        """View the rules for Red Dragon Inn."""
+        pass
+
+    @rdi.command(aliases=["hr"])
+    async def houserules(self, ctx):
+        """View the house rules in play for the current game of Red Dragon Inn."""
+        pass
+
+    @rdi.command(aliases=["newrule", "nr", "ar"])
+    async def addrule(self, ctx):
+        """Add a new house rule for the current game. Only the boozemeister can add house rules."""
+        if self.author_is_boozemeister(ctx):
+            pass
+        pass
+
+    @rdi.command()
+    async def rules(self, ctx):
+        """View all rules in effect for the current game of Red Dragon Inn"""
+        await self.gamerules(ctx)
+        await self.houserules(ctx)
+
     @rdi.command(aliases=["end"])
     async def end_game(self, ctx):
         """end the current Red Dragon Inn game"""
