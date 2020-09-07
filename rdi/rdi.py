@@ -105,14 +105,32 @@ class RedDragonInn(commands.Cog):
     @rdi.command(aliases=["hr"])
     async def houserules(self, ctx):
         """View the house rules in play for the current game of Red Dragon Inn."""
-        pass
+        if self.game_exists(ctx):
+            game = self.game_for_guild_channel(ctx)
+            await ctx.send("**House Rules**")
+            for num, rule in game.get_rules():
+                await ctx.send(f"{num}. {rule}")
 
     @rdi.command(aliases=["newrule", "nr", "ar"])
-    async def addrule(self, ctx):
+    async def addrule(self, ctx, rule: str):
         """Add a new house rule for the current game. Only the boozemeister can add house rules."""
         if self.author_is_boozemeister(ctx):
-            pass
-        pass
+            game = self.game_for_guild_channel(ctx)
+            game.house_rules.append(rule)
+            await ctx.send("New house rule added.")
+            await self.houserules(ctx)
+        else:
+            ctx.send("Only the boozemeister can add new house rules.")
+
+    @rdi.command()
+    async def removerule(self, ctx, rule: int):
+        """Remove a house rule. Only the boozemeister can remove house rules."""
+        if self.author_is_boozemeister(ctx):
+            game = self.game_for_guild_channel(ctx)
+            # The rule numbers are offset by 1 for the users.
+            del game.house_rules[rule-1]
+            await self.houserules(ctx)
+
 
     @rdi.command()
     async def rules(self, ctx):

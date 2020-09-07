@@ -8,6 +8,7 @@ class Game:
         self.boozemeister = boozemeister
         self.players = dict()
         self.players[boozemeister.display_name] = Player(boozemeister.display_name)
+        self.house_rules = list()
 
     def stats(self):
         columns = ["player", "character", "fortitude", "alcohol", "gold", "drinks"]
@@ -18,3 +19,7 @@ class Game:
 
     def add_player(self, player: Player):
         self.players[player.discord_user] = player
+
+    def get_rules(self):
+        # Enumerate the rules, starting with an index of 1 rather than 0.
+        return enumerate(self.house_rules, 1)
