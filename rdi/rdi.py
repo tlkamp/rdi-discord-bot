@@ -66,14 +66,14 @@ class RedDragonInn(commands.Cog):
         """Add or remove fortitude from your character"""
         if self.game_exists(ctx):
             game = self.game_for_guild_channel(ctx)
-            game.players[ctx.author.display_name].fortitude += value
+            game.players[ctx.author.display_name].update_fortitude(value)
             await self.stats(ctx)
 
     @rdi.command()
     async def alcohol(self, ctx, value: int):
         if self.game_exists(ctx):
             game = self.game_for_guild_channel(ctx)
-            game.players[ctx.author.display_name].alcohol += value
+            game.players[ctx.author.display_name].update_alcohol(value)
             await self.stats(ctx)
 
     @rdi.command()
@@ -81,7 +81,7 @@ class RedDragonInn(commands.Cog):
         """Add or remove gold from your pot. """
         if self.game_exists(ctx):
             game = self.game_for_guild_channel(ctx)
-            game.players[ctx.author.display_name].gold += value
+            game.players[ctx.author.display_name].update_gold(value)
             await self.stats(ctx)
 
     @rdi.command()
