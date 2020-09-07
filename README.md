@@ -7,13 +7,13 @@ This Cog is intended to help players keep track of game events while playing Red
 You can find the publisher's recommendation for how to play Red Dragon Inn remotely [here.](http://slugfestgames.com/teleconference-rdi/)
 
 ### Starting A Game
-To start a game, you must identify the Boozemeister and any Players.
-> **Note**: The Boozemeister is automatically included as a player.
+To start a game of Red Dragon Inn, issue the following command: `!rdi start`
 
-Begin a game by issuing the following command: `!rdi start <boozemeister> <players>`
+> **Note**: The user who starts the game becomes the Boozemeister.
+> The Boozemeister is added as a player automatically.
 
 ### Viewing Player Stats
-To view the current Fortitude, Alcohol Content, and Gold of the current players:
+To view the current Fortitude, Alcohol Content, Gold, and Drink Me! pile of the current players:
 
 `!rdi stats`
 
@@ -37,4 +37,5 @@ Decrement your current Drink Me! pile count.
 `!rdi drink`
 
 ### Ending a Game
+> **Note**: Only the Boozemeister is allowed to end the game.
 `!rdi end_game`
