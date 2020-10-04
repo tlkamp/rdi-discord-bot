@@ -4,7 +4,7 @@ import discord
 from .player import Player
 from .game import Game
 import logging
-from .util import author_is_boozemeister
+from .util import *
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +106,7 @@ class RedDragonInn(commands.Cog):
             await self.stats(ctx)
 
     @rdi.command()
+    @author_in_game
     async def buy(self, ctx, player: discord.user.User, count: int):
         """Buy a drink for your friend! Adds [count] drinks to their Drink Me! pile"""
         if self.author_in_game(ctx) and self.player_in_game(ctx, player):
@@ -114,12 +115,12 @@ class RedDragonInn(commands.Cog):
             await self.stats(ctx)
 
     @rdi.command()
+    @author_in_game
     async def drink(self, ctx):
         """Removes a drink from your Drink Me! pile."""
-        if self.author_in_game(ctx):
-            game = self.game_for_guild_channel(ctx)
-            game.players[ctx.author.display_name].drink()
-            await self.stats(ctx)
+        game = self.game_for_guild_channel(ctx)
+        game.players[ctx.author.display_name].drink()
+        await self.stats(ctx)
 
     # Game Rules
     @rdi.command(aliases=["gr"])
@@ -172,11 +173,6 @@ class RedDragonInn(commands.Cog):
 
     def game_for_guild_channel(self, ctx) -> Game:
         return self.games[ctx.guild][ctx.channel]
-
-    def author_in_game(self, ctx) -> bool:
-        if self.game_exists(ctx):
-            return ctx.author.display_name in self.game_for_guild_channel(ctx).players.keys()
-        return False
 
     def player_in_game(self, ctx, player: discord.user.User) -> bool:
         if self.game_exists(ctx):
