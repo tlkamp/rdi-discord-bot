@@ -17,7 +17,7 @@ class Player:
         return self.__repr__()
 
     def drink(self):
-        self.drinks -= 1
+        self._drinks -= 1
 
     def fortitude(self):
         return self._fortitude
