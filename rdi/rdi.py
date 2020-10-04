@@ -4,6 +4,7 @@ import discord
 from .player import Player
 from .game import Game
 import logging
+from .util import author_is_boozemeister
 
 logger = logging.getLogger(__name__)
 
@@ -38,13 +39,11 @@ class RedDragonInn(commands.Cog):
         await self.stats(ctx)
 
     @rdi.command()
+    @author_is_boozemeister
     async def end(self, ctx):
-        """end the current Red Dragon Inn game"""
-        if self.author_is_boozemeister(ctx):
-            del self.games[ctx.guild][ctx.channel]
-            await ctx.send(f"The Red Dragon Inn game for {ctx.channel} has ended.")
-        else:
-            await ctx.send("Only the boozemeister can end the game.")
+        """End the current Red Dragon Inn game"""
+        del self.games[ctx.guild][ctx.channel]
+        await ctx.send(f"The Red Dragon Inn game for {ctx.channel} has ended.")
 
     @rdi.command()
     async def play(self, ctx, character: str = ""):
@@ -57,25 +56,23 @@ class RedDragonInn(commands.Cog):
             await self.stats(ctx)
 
     @rdi.command(aliases=["randomize", "rt"])
+    @author_is_boozemeister
     async def random(self, ctx):
         """Randomize the turn order. Only the boozemeister can randomize the turn order."""
-        if self.author_is_boozemeister(ctx):
-            import random
-            game = self.game_for_guild_channel(ctx)
-            temp = list(game.players.items())
-            random.shuffle(temp)
-            game.players = dict(temp)
-            await self.stats(ctx)
+        import random
+        game = self.game_for_guild_channel(ctx)
+        temp = list(game.players.items())
+        random.shuffle(temp)
+        game.players = dict(temp)
+        await self.stats(ctx)
 
     @rdi.command(aliases=["add"])
+    @author_is_boozemeister
     async def addplayer(self, ctx, player: discord.user.User, character=""):
         """Add another player to the game. Only the boozemeister can add other players."""
-        if self.author_is_boozemeister(ctx):
-            self.games[ctx.guild][ctx.channel].add_player(Player(player.display_name, character))
-            await ctx.send(f"Player {player} added to the game.")
-            await self.stats(ctx)
-        else:
-            await ctx.send("Only the boozemeister can add other players to a game.")
+        self.games[ctx.guild][ctx.channel].add_player(Player(player.display_name, character))
+        await ctx.send(f"Player {player} added to the game.")
+        await self.stats(ctx)
 
     @rdi.command()
     async def stats(self, ctx):
@@ -145,24 +142,22 @@ class RedDragonInn(commands.Cog):
                 await ctx.send(f"{num}. {rule}")
 
     @rdi.command(aliases=["newrule", "nr", "ar"])
+    @author_is_boozemeister
     async def addrule(self, ctx, rule: str):
         """Add a new house rule for the current game. Only the boozemeister can add house rules."""
-        if self.author_is_boozemeister(ctx):
-            game = self.game_for_guild_channel(ctx)
-            game.house_rules.append(rule)
-            await ctx.send("New house rule added.")
-            await self.houserules(ctx)
-        else:
-            ctx.send("Only the boozemeister can add new house rules.")
+        game = self.game_for_guild_channel(ctx)
+        game.house_rules.append(rule)
+        await ctx.send("New house rule added.")
+        await self.houserules(ctx)
 
     @rdi.command()
+    @author_is_boozemeister
     async def removerule(self, ctx, rule: int):
         """Remove a house rule. Only the boozemeister can remove house rules."""
-        if self.author_is_boozemeister(ctx):
-            game = self.game_for_guild_channel(ctx)
-            # The rule numbers are offset by 1 for the users.
-            del game.house_rules[rule-1]
-            await self.houserules(ctx)
+        game = self.game_for_guild_channel(ctx)
+        # The rule numbers are offset by 1 for the users.
+        del game.house_rules[rule-1]
+        await self.houserules(ctx)
 
     @rdi.command()
     async def rules(self, ctx):
@@ -177,12 +172,6 @@ class RedDragonInn(commands.Cog):
 
     def game_for_guild_channel(self, ctx) -> Game:
         return self.games[ctx.guild][ctx.channel]
-
-    def author_is_boozemeister(self, ctx) -> bool:
-        if self.game_exists(ctx):
-            if ctx.author == self.games[ctx.guild][ctx.channel].boozemeister:
-                return True
-        return False
 
     def author_in_game(self, ctx) -> bool:
         if self.game_exists(ctx):
